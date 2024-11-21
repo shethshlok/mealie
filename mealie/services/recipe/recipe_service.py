@@ -14,6 +14,7 @@ from slugify import slugify
 from mealie.core import exceptions
 from mealie.core.config import get_app_settings
 from mealie.core.dependencies.dependencies import get_temporary_path
+from mealie.db.models.recipe.instruction import RecipeIngredientRefLink
 from mealie.lang.providers import Translator
 from mealie.pkgs import cache
 from mealie.repos.all_repositories import get_repositories
@@ -59,6 +60,9 @@ class RecipeServiceBase(BaseService):
 class RecipeService(RecipeServiceBase):
     def _get_recipe(self, data: str | UUID, key: str | None = None) -> Recipe:
         recipe = self.group_recipes.get_one(data, key)
+        # Validate ingredient references to clean bad data
+        self._validate_ingredient_references(recipe)
+
         if recipe is None:
             raise exceptions.NoEntryFound("Recipe not found.")
         return recipe
@@ -151,6 +155,50 @@ class RecipeService(RecipeServiceBase):
 
         else:
             return self._get_recipe(slug_or_id, "slug")
+
+    def _validate_ingredient_references(self, recipe: Recipe) -> None:
+        """
+        Validates and updates ingredient references in the given recipe.
+
+        This method performs the following actions:
+        - Collects all valid ingredient reference IDs from the recipe's ingredients.
+        - Iterates through each instruction in the recipe.
+        - Retrieves existing ingredient reference links from the database for each instruction.
+        - Identifies and deletes invalid references from the database.
+        - Updates the instruction's references to only include valid ones.
+        - Commits the changes to the database.
+
+        Args:
+            recipe (Recipe): The recipe object containing ingredients and instructions to validate.
+        """
+
+        valid_ingredient_ids = {ingredient.reference_id for ingredient in recipe.recipe_ingredient}
+        self.logger.debug("Valid ingredient IDs: %s", valid_ingredient_ids)
+
+        for instruction in recipe.recipe_instructions or []:
+            if instruction.ingredient_references:
+                # Get all existing RecipeIngredientRefLink objects from the database for this instruction
+                existing_refs = (
+                    self.repos.session.query(RecipeIngredientRefLink)
+                    .filter(RecipeIngredientRefLink.instruction_id == instruction.id)
+                    .all()
+                )
+
+                # Identify invalid references from existing database records
+                invalid_refs = [ref for ref in existing_refs if ref.reference_id not in valid_ingredient_ids]
+
+                # Delete invalid references from database
+                for ref in invalid_refs:
+                    self.logger.debug("Deleting invalid reference: %s", ref.reference_id)
+                    self.repos.session.delete(ref)
+
+                # Update instruction's references to only include valid ones
+                instruction.ingredient_references = [
+                    ref for ref in instruction.ingredient_references if ref.reference_id in valid_ingredient_ids
+                ]
+
+        # Commit the changes
+        self.repos.session.commit()
 
     def create_one(self, create_data: Recipe | CreateRecipe) -> Recipe:
         if create_data.name is None:
@@ -344,6 +392,7 @@ class RecipeService(RecipeServiceBase):
         new_recipe = self._recipe_creation_factory(new_name, additional_attrs=new_recipe.model_dump())
 
         new_recipe = self.repos.recipes.create(new_recipe)
+        self._validate_ingredient_references(new_recipe)
 
         # Copy all assets (including images) to the new recipe directory
         # This assures that replaced links in recipe steps continue to work when the old recipe is deleted
@@ -396,6 +445,7 @@ class RecipeService(RecipeServiceBase):
         recipe = self._pre_update_check(slug_or_id, update_data)
 
         new_data = self.group_recipes.update(recipe.slug, update_data)
+        self._validate_ingredient_references(new_data)
         self.check_assets(new_data, recipe.slug)
         return new_data
 

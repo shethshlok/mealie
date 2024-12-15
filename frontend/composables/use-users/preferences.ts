@@ -1,6 +1,7 @@
 import { Ref, useContext } from "@nuxtjs/composition-api";
 import { useLocalStorage, useSessionStorage } from "@vueuse/core";
 import { RegisteredParser, TimelineEventType } from "~/lib/api/types/recipe";
+import { QueryFilterJSON } from "~/lib/api/types/response";
 
 export interface UserPrintPreferences {
   imagePosition: string;
@@ -43,6 +44,21 @@ export interface UserTimelinePreferences {
 
 export interface UserParsingPreferences {
   parser: RegisteredParser;
+}
+
+export interface UserCookbooksPreferences {
+  hideOtherHouseholds: boolean;
+}
+
+export interface UserRecipeFinderPreferences {
+  foodIds: string[];
+  toolIds: string[];
+  queryFilter: string;
+  queryFilterJSON: QueryFilterJSON;
+  maxMissingFoods: number;
+  maxMissingTools: number;
+  includeFoodsOnHand: boolean;
+  includeToolsOnHand: boolean;
 }
 
 export function useUserMealPlanPreferences(): Ref<UserMealPlanPreferences> {
@@ -150,6 +166,41 @@ export function useParsingPreferences(): Ref<UserParsingPreferences> {
     // we cast to a Ref because by default it will return an optional type ref
     // but since we pass defaults we know all properties are set.
   ) as unknown as Ref<UserParsingPreferences>;
+
+  return fromStorage;
+}
+
+export function useCookbookPreferences(): Ref<UserCookbooksPreferences> {
+  const fromStorage = useLocalStorage(
+    "cookbook-preferences",
+    {
+      hideOtherHouseholds: false,
+    },
+    { mergeDefaults: true }
+    // we cast to a Ref because by default it will return an optional type ref
+    // but since we pass defaults we know all properties are set.
+  ) as unknown as Ref<UserCookbooksPreferences>;
+
+  return fromStorage;
+}
+
+export function useRecipeFinderPreferences(): Ref<UserRecipeFinderPreferences> {
+  const fromStorage = useLocalStorage(
+    "recipe-finder-preferences",
+    {
+      foodIds: [],
+      toolIds: [],
+      queryFilter: "",
+      queryFilterJSON: { parts: [] } as QueryFilterJSON,
+      maxMissingFoods: 20,
+      maxMissingTools: 20,
+      includeFoodsOnHand: true,
+      includeToolsOnHand: true,
+    },
+    { mergeDefaults: true }
+    // we cast to a Ref because by default it will return an optional type ref
+    // but since we pass defaults we know all properties are set.
+  ) as unknown as Ref<UserRecipeFinderPreferences>;
 
   return fromStorage;
 }

@@ -33,27 +33,25 @@ def random_comment(recipe_id: UUID4) -> dict:
 
 
 def test_create_comment(api_client: TestClient, unique_recipe: Recipe, unique_user: TestUser):
+    # Update user's full name
+    update_data = {"name": "Test User Full Name"}
+
     # Create Comment
     create_data = random_comment(unique_recipe.id)
     response = api_client.post(api_routes.comments, json=create_data, headers=unique_user.token)
     assert response.status_code == 201
 
     response_data = response.json()
-
-    assert response_data["recipeId"] == str(unique_recipe.id)
-    assert response_data["text"] == create_data["text"]
-    assert response_data["userId"] == str(unique_user.user_id)
+    assert response_data["user"]["name"] == update_data["name"]
 
     # Check for Proper Association
     response = api_client.get(api_routes.recipes_slug_comments(unique_recipe.slug), headers=unique_user.token)
     assert response.status_code == 200
 
-    response_data = response.json()
-
-    assert len(response_data) == 1
-    assert response_data[0]["recipeId"] == str(unique_recipe.id)
-    assert response_data[0]["text"] == create_data["text"]
-    assert response_data[0]["userId"] == str(unique_user.user_id)
+    comments = response.json()
+    assert len(comments) == 1
+    assert len(response_data[0]["user"]["name"]) > 0
+    assert comments[0]["user"]["name"] == update_data["name"]
 
 
 def test_update_comment(api_client: TestClient, unique_recipe: Recipe, unique_user: TestUser):

@@ -10,7 +10,7 @@ from tests.utils import api_routes
 from tests.utils.factories import random_string
 from tests.utils.fixture_schemas import TestUser
 
-
+x
 @pytest.fixture(scope="function")
 def unique_recipe(api_client: TestClient, unique_user: TestUser):
     payload = {"name": random_string(length=20)}
@@ -42,6 +42,10 @@ def test_create_comment(api_client: TestClient, unique_recipe: Recipe, unique_us
     assert response.status_code == 201
 
     response_data = response.json()
+    
+    # Add a check for the 'user' and 'name' fields
+    assert "user" in response_data
+    assert "name" in response_data["user"]
     assert response_data["user"]["name"] == update_data["name"]
 
     # Check for Proper Association
@@ -50,7 +54,7 @@ def test_create_comment(api_client: TestClient, unique_recipe: Recipe, unique_us
 
     comments = response.json()
     assert len(comments) == 1
-    assert len(response_data[0]["user"]["name"]) > 0
+    assert len(comments[0]["user"]["name"]) > 0
     assert comments[0]["user"]["name"] == update_data["name"]
 
 

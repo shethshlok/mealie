@@ -34,7 +34,7 @@ def random_comment(recipe_id: UUID4) -> dict:
 
 def test_create_comment(api_client: TestClient, unique_recipe: Recipe, unique_user: TestUser):
     # Update user's full name
-    update_data = {"name": "Test User Full Name"}
+    update_data = {"fullName": "Test User Full Name"}  # Note the change from "name" to "fullName"
 
     # Create Comment
     create_data = random_comment(unique_recipe.id)
@@ -43,10 +43,12 @@ def test_create_comment(api_client: TestClient, unique_recipe: Recipe, unique_us
 
     response_data = response.json()
 
-    # Add a check for the 'user' and 'name' fields
+    # Check if 'user' and 'fullName' fields exist in response_data
     assert "user" in response_data
-    assert "name" in response_data["user"]
-    assert response_data["user"]["name"] == update_data["name"]
+    assert "fullName" in response_data["user"]
+
+    # Update the name and check for it
+    assert response_data["user"]["fullName"] == update_data["fullName"]
 
     # Check for Proper Association
     response = api_client.get(api_routes.recipes_slug_comments(unique_recipe.slug), headers=unique_user.token)
@@ -54,8 +56,8 @@ def test_create_comment(api_client: TestClient, unique_recipe: Recipe, unique_us
 
     comments = response.json()
     assert len(comments) == 1
-    assert len(comments[0]["user"]["name"]) > 0
-    assert comments[0]["user"]["name"] == update_data["name"]
+    assert len(comments[0]["user"]["fullName"]) > 0
+    assert comments[0]["user"]["fullName"] == update_data["fullName"]
 
 
 def test_update_comment(api_client: TestClient, unique_recipe: Recipe, unique_user: TestUser):

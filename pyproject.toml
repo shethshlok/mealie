@@ -3,7 +3,7 @@ authors = ["Hayden <hay-kot@pm.me>"]
 description = "A Recipe Manager"
 license = "AGPL"
 name = "mealie"
-version = "2.4.0"
+version = "2.4.2"
 
 [tool.poetry.scripts]
 start = "mealie.app:main"
@@ -31,12 +31,12 @@ python = "^3.12"
 python-dateutil = "^2.8.2"
 python-dotenv = "^1.0.0"
 python-ldap = "^3.3.1"
-python-multipart = "^0.0.19"
+python-multipart = "^0.0.20"
 python-slugify = "^8.0.0"
 recipe-scrapers = "^15.0.0"
 requests = "^2.31.0"
 tzdata = "^2024.1"
-uvicorn = { extras = ["standard"], version = "^0.33.0" }
+uvicorn = { extras = ["standard"], version = "^0.34.0" }
 beautifulsoup4 = "^4.11.2"
 isodate = "^0.7.0"
 text-unidecode = "^1.3"

@@ -182,7 +182,7 @@
     "date": "Dată",
     "id": "Id",
     "owner": "Proprietar",
-    "change-owner": "Change Owner",
+    "change-owner": "Modifica proprietar",
     "date-added": "Data adăugării",
     "none": "Niciuna",
     "run": "Execută",
@@ -214,10 +214,10 @@
     "confirm-delete-generic-items": "Sunteți sigur că doriți să ștergeți următoarele?",
     "organizers": "Organizatori",
     "caution": "Atenție",
-    "show-advanced": "Show Advanced",
-    "add-field": "Add Field",
-    "date-created": "Date Created",
-    "date-updated": "Date Updated"
+    "show-advanced": "Arată avansate",
+    "add-field": "Adaugă câmp",
+    "date-created": "Data creării",
+    "date-updated": "Data actualizată"
   },
   "group": {
     "are-you-sure-you-want-to-delete-the-group": "Sunteți sigur că doriți să ștergeți <b>{groupName}<b/>?",
@@ -276,7 +276,8 @@
     "admin-group-management": "Gestionare grup administratori",
     "admin-group-management-text": "Modificările la acest grup se vor reflecta imediat.",
     "group-id-value": "ID grup: {0}",
-    "total-households": "Total locuințe"
+    "total-households": "Total locuințe",
+    "you-must-select-a-group-before-selecting-a-household": "Trebuie să selectaţi un grup înainte de a selecta o gospodărie"
   },
   "household": {
     "household": "Locuință",
@@ -356,7 +357,7 @@
     "for-type-meal-types": "pentru {0} tipuri de mese",
     "meal-plan-rules": "Regulile Planului de Masă",
     "new-rule": "Regulă nouă",
-    "meal-plan-rules-description": "You can create rules for auto selecting recipes for your meal plans. These rules are used by the server to determine the random pool of recipes to select from when creating meal plans. Note that if rules have the same day/type constraints then the rule filters will be merged. In practice, it's unnecessary to create duplicate rules, but it's possible to do so.",
+    "meal-plan-rules-description": "Puteți crea reguli pentru selectarea automată a rețetelor pentru planurile dumneavoastră de masă. Aceste reguli sunt folosite de către server pentru a determina rețetele valabile pentru selecție, atunci când creezi planurile de masă. În cazul in care regulile au aceleași constrângeri de zi sau de tip, atunci categoriile regulilor vor fi fuzionate. În practică, este inutilă creerea regulilor dublate, dar este posibil să se întample acest lucru.",
     "new-rule-description": "Atunci când creați o nouă regulă pentru un plan de masă puteți restricționa regula aplicabilă pentru o anumită zi a săptămânii și/sau pentru un anumit tip de masă. Pentru a aplica o regulă pentru toate zilele sau toate tipurile de mese puteţi seta regula la \"Oricare\" ce va fi aplicată la toate valorile posibile pentru ziua şi/sau tipul mesei.",
     "recipe-rules": "Reguli rețetă",
     "applies-to-all-days": "Se aplică pentru toate zilele",
@@ -466,7 +467,7 @@
     "calories-suffix": "calorii",
     "carbohydrate-content": "Carbohidrat",
     "categories": "Categorii",
-    "cholesterol-content": "Cholesterol",
+    "cholesterol-content": "Colesterol",
     "comment-action": "Comentariu",
     "comment": "Comentariu",
     "comments": "Comentarii",
@@ -513,10 +514,11 @@
     "recipe-updated": "Rețetă actualizată",
     "remove-from-favorites": "Șterge din Favorite",
     "remove-section": "Elimină secţiunea",
-    "saturated-fat-content": "Saturated fat",
+    "saturated-fat-content": "Acizi grași saturați",
     "save-recipe-before-use": "Salvați rețeta înainte de utilizare",
     "section-title": "Titlu secțiune",
     "servings": "Porții",
+    "serves-amount": "Servire {amount}",
     "share-recipe-message": "Voiam să vă împărtășesc rețeta mea: {0}.",
     "show-nutrition-values": "Afișare valori nutriționale",
     "sodium-content": "Sodiu",
@@ -524,9 +526,9 @@
     "sugar-content": "Zaharuri",
     "title": "Titlu",
     "total-time": "Timp total",
-    "trans-fat-content": "Trans-fat",
+    "trans-fat-content": "Acizii grași nesaturați",
     "unable-to-delete-recipe": "Rețeta nu a putut fi ștearsă",
-    "unsaturated-fat-content": "Unsaturated fat",
+    "unsaturated-fat-content": "Acizi grași nesaturați",
     "no-recipe": "Nicio rețetă",
     "locked-by-owner": "Blocat de proprietar",
     "join-the-conversation": "Alătură-te conversației",
@@ -545,6 +547,8 @@
     "failed-to-add-recipe-to-mealplan": "Adăugarea rețetei la planul de mese a eșuat",
     "failed-to-add-to-list": "Adăugarea la listă a eșuat",
     "yield": "Producție",
+    "yields-amount-with-text": "Produce {amount} {text}",
+    "yield-text": "Yield Text",
     "quantity": "Cantitate",
     "choose-unit": "Alegeţi unitatea",
     "press-enter-to-create": "Apăsați Enter pentru a crea",
@@ -640,7 +644,9 @@
     "recipe-debugger-use-openai-description": "Folosește OpenAI pentru a analiza rezultatele în loc să te bazezi pe biblioteca de \"scraping\". La crearea unei rețete prin URL, acest lucru se face automat în cazul în care biblioteca de \"scraping\" eșuează, dar puteți testa manual acest lucru aici.",
     "debug": "Depanare",
     "tree-view": "Vizualizare Ierarhică",
+    "recipe-servings": "Recipe Servings",
     "recipe-yield": "Producere rețetă",
+    "recipe-yield-text": "Recipe Yield Text",
     "unit": "Unitate",
     "upload-image": "Încărcare imagine",
     "screen-awake": "Păstrare ecran aprins",
@@ -662,7 +668,25 @@
       "missing-food": "Creează mâncare lipsă: {food}",
       "no-food": "Niciun aliment"
     },
-    "reset-servings-count": "Reset Servings Count"
+    "reset-servings-count": "Reset Servings Count",
+    "not-linked-ingredients": "Additional Ingredients"
+  },
+  "recipe-finder": {
+    "recipe-finder": "Recipe Finder",
+    "recipe-finder-description": "Search for recipes based on ingredients you have on hand. You can also filter by tools you have available, and set a maximum number of missing ingredients or tools.",
+    "selected-ingredients": "Selected Ingredients",
+    "no-ingredients-selected": "No ingredients selected",
+    "missing": "Missing",
+    "no-recipes-found": "No recipes found",
+    "no-recipes-found-description": "Try adding more ingredients to your search or adjusting your filters",
+    "include-ingredients-on-hand": "Include Ingredients On Hand",
+    "include-tools-on-hand": "Include Tools On Hand",
+    "max-missing-ingredients": "Max Missing Ingredients",
+    "max-missing-tools": "Max Missing Tools",
+    "selected-tools": "Selected Tools",
+    "other-filters": "Other Filters",
+    "ready-to-make": "Ready to Make",
+    "almost-ready-to-make": "Almost Ready to Make"
   },
   "search": {
     "advanced-search": "Căutare avansată",
@@ -866,7 +890,8 @@
     "you-are-offline-description": "Not all features are available while offline. You can still add, modify, and remove items, but you will not be able to sync your changes to the server until you are back online.",
     "are-you-sure-you-want-to-check-all-items": "Are you sure you want to check all items?",
     "are-you-sure-you-want-to-uncheck-all-items": "Are you sure you want to uncheck all items?",
-    "are-you-sure-you-want-to-delete-checked-items": "Are you sure you want to delete all checked items?"
+    "are-you-sure-you-want-to-delete-checked-items": "Are you sure you want to delete all checked items?",
+    "no-shopping-lists-found": "No Shopping Lists Found"
   },
   "sidebar": {
     "all-recipes": "All Recipes",
@@ -1278,6 +1303,7 @@
   "profile": {
     "welcome-user": "👋 Welcome, {0}!",
     "description": "Manage your profile, recipes, and group settings.",
+    "invite-link": "Invite Link",
     "get-invite-link": "Get Invite Link",
     "get-public-link": "Get Public Link",
     "account-summary": "Account Summary",
@@ -1327,6 +1353,8 @@
   "cookbook": {
     "cookbooks": "Cookbooks",
     "description": "Cookbooks are another way to organize recipes by creating cross sections of recipes, organizers, and other filters. Creating a cookbook will add an entry to the side-bar and all the recipes with the filters chosen will be displayed in the cookbook.",
+    "hide-cookbooks-from-other-households": "Hide Cookbooks from Other Households",
+    "hide-cookbooks-from-other-households-description": "When enabled, only cookbooks from your household will appear on the sidebar",
     "public-cookbook": "Public Cookbook",
     "public-cookbook-description": "Public Cookbooks can be shared with non-mealie users and will be displayed on your groups page.",
     "filter-options": "Filter Options",
